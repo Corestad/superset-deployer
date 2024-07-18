@@ -542,9 +542,6 @@ supersetCeleryFlower:
     annotations: {}
     loadBalancerIP: ~
     port: 5555
-    nodePort:
-      # -- (int)
-      http: nil
   startupProbe:
     httpGet:
       path: /api/workers
@@ -658,9 +655,6 @@ supersetWebsockets:
     annotations: {}
     loadBalancerIP: ~
     port: 8080
-    nodePort:
-      # -- (int)
-      http: nil
   command: []
   resources: {}
   # -- Launch additional containers into supersetWebsockets pods
