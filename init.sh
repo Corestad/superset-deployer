@@ -45,9 +45,21 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.
 sudo apt update;
 sudo apt install helm --yes;
 
+# install kubectl
+sudo apt install -y apt-transport-https ca-certificates curl gnupg;
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg;
+sudo chmod 644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg; # allow unprivileged APT programs to read this keyring
+# This overwrites any existing configuration in /etc/apt/sources.list.d/kubernetes.list
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list;
+sudo chmod 644 /etc/apt/sources.list.d/kubernetes.list;   # helps tools such as command-not-found to work correctly
+sudo apt update;
+sudo apt install -y kubectl;
 
 # 4, SUPERSET SETUP
 helm repo add superset https://apache.github.io/superset;
 
 # download values yaml for the chart
-wget -O values.yaml https://raw.githubusercontent.com/apache/superset/master/helm/superset/values.yaml;
+wget -O values.yaml https://raw.githubusercontent.com/Corestad/superset-setup/main/superset/helm/superset/values.yaml;
+
+# apply custom values to chart and install it
+helm upgrade --install --values values.yaml superset superset/superset;
