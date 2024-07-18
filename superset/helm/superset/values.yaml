@@ -54,6 +54,7 @@ bootstrapScript: |
   psycopg2-binary==2.9.1 \
   pymssql==2.2.3 \
   pybigquery \
+  prophet \
   shillelagh[gsheetsapi] \
   sqlalchemy-bigquery \
   redis==3.5.3 && \
