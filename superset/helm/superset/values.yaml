@@ -208,7 +208,7 @@ service:
   type: NodePort
   port: 8088
   nodePort:
-    http: 55555
+    http: 32369
 
 ingress:
   enabled: false
