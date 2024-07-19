@@ -179,9 +179,9 @@ configOverrides: {}
   #   AUTH_USER_REGISTRATION = True
   #   # The default user self registration role
   #   AUTH_USER_REGISTRATION_ROLE = "Admin"
-  # secret: |
-  #   # Generate your own secret key for encryption. Use `openssl rand -base64 42` to generate a good key
-  #   SECRET_KEY = 'CHANGE_ME_TO_A_COMPLEX_RANDOM_SECRET'
+  secret: |
+    # Generate your own secret key for encryption. Use `openssl rand -base64 42` to generate a good key
+   SECRET_KEY = '23io42oiioo2ihgoi2hgoihlksfdglsdjgo34ithoeirghsdfhgjLKIOHRIOGth3oi4h5tlkfejglkjsdjfhgklhaskjt34tjg'
 
 # -- Same as above but the values are files
 configOverridesFiles: {}
@@ -207,6 +207,8 @@ initImage:
 service:
   type: NodePort
   port: 8088
+  nodePort:
+    http: 55555
 
 ingress:
   enabled: false
