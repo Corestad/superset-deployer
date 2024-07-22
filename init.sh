@@ -149,7 +149,7 @@ sudo systemctl enable caddy-api.service caddy-api.service;
 # 6, get minikube IP of the exposed service
 log_step "Set up Caddyfile"
 exposed_service_url=$(minikube service superset --url);
-sed -e "s/MINIKUBE_URL/$exposed_service_url/" -e "s/DOMAIN_NAME/$DOMAIN_NAME/" ./Caddyfile > ./tmp_caddyfile;
+sed -e "s,MINIKUBE_URL,$exposed_service_url,g" -e "s,DOMAIN_NAME,$DOMAIN_NAME,g" ./Caddyfile > ./tmp_caddyfile; # custom delimeter to sed since we are inserting url taht contains /
 sudo mv ./tmp_caddyfile /etc/caddy/Caddyfile;
 caddy reload -c /etc/caddy/Caddyfile;
 
