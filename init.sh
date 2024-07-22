@@ -81,7 +81,10 @@ sudo groupadd docker | true;
 set_safe;
 
 sudo usermod -aG docker "$USER";
-newgrp docker;
+
+# newgrp starts a subshell that never returns
+/usr/bin/nwegrp docker <<EONG
+EONG
 
 # autostart docker on system startup
 log_step "Enable docker service";
