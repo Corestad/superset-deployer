@@ -57,7 +57,7 @@ bootstrapScript: |
   prophet \
   shillelagh[gsheetsapi] \
   sqlalchemy-bigquery \
-  redis==3.5.3 && \
+  redis==4.5.4 && \
   if [ ! -f ~/bootstrap ]; then echo "Running Superset with uid {{ .Values.runAsUser }}" > ~/bootstrap; fi
 
 # -- The name of the secret which we will use to generate a superset_config.py file
