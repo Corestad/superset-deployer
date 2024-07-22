@@ -46,14 +46,8 @@ sudo apt -qq install -y debian-keyring debian-archive-keyring apt-transport-http
 # 2, DOCKER ENGINE INSTALL
 # remove old docker engine packages
 log_step "Remove old docker engine packages";
-set +e;
 for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt remove $pkg; done;
-exit_code=$?
 
-if [ $exit_code -ne 0 ]; then
-  echo "Failed to remove old docker engine packages (if they ever existed)";
-fi
-set -e;
 # Add Docker's official GPG key:
 log_step "Installing Docker engine";
 sudo install -m 0755 -d /etc/apt/keyrings;
@@ -74,13 +68,10 @@ log_step "Docker engine installed";
 # docker postinstall
 log_step "Docker postinstall";
 
-set +e;
-sudo groupadd docker;
-exit_code=$?
-if [ $exit_code -ne 0 ]; then
-  echo "Skipping exit due to error";
-fi
-set -e;
+set +o pipefall; # error returned when docker group already exists
+sudo groupadd docker | true;
+set -o pipefall;
+
 sudo usermod -aG docker "$USER";
 newgrp docker;
 
