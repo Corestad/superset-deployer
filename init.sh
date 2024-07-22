@@ -5,6 +5,9 @@ function log_step() {
   echo "### $1";
 }
 
+# init opts variables
+domain_name='';
+
 while getopts u:a:f: flag
 do
     case "${flag}" in
