@@ -6,17 +6,30 @@ function log_step() {
 }
 
 # init opts variables
-domain_name='';
+DOMAIN_NAME='';
+POSITIONAL_ARGS=();
 
-while getopts u:a:f: flag
-do
-    case "${flag}" in
-        d) domain_name=${OPTARG};;
-        *) echo "Invalid";;
-    esac
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -d|--domain)
+      DOMAIN_NAME="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    -*|--*)
+      echo "Unknown option $1"
+      exit 1
+      ;;
+    *)
+      POSITIONAL_ARGS+=("$1") # save positional arg
+      shift # past argument
+      ;;
+  esac
 done
 
-if [ -z "$domain_name" ]; then
+
+
+if [ -z "$DOMAIN_NAME" ]; then
   echo "Domain name is required";
   echo "Usage: ./init.sh -d <domain_name>"
   exit 1;
@@ -124,7 +137,7 @@ sudo systemctl enable caddy-api.service caddy-api.service;
 log_step "Set up Caddyfile"
 minikue service superset --url
 exposed_service_url=$?
-sed -i -e "s/MINIKUBE_URL/$exposed_service_url" -e "s/DOMAIN_NAME/$domain_name" ./Caddyfile >> /etc/caddy/Caddyfile;
+sed -i -e "s/MINIKUBE_URL/$exposed_service_url" -e "s/DOMAIN_NAME/$DOMAIN_NAME" ./Caddyfile >> /etc/caddy/Caddyfile;
 caddy reload -c /etc/caddy/Caddyfile;
 
 # TODO: add minikube to the system startup
