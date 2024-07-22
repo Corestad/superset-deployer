@@ -117,13 +117,22 @@ sudo chmod 644 /etc/apt/sources.list.d/kubernetes.list;   # helps tools such as 
 sudo apt -qq update;
 sudo apt -qq install -y kubectl;
 
-log_step "Install kubectl autocomplete";
-source /usr/share/bash-completion/bash_completion;
-echo 'source <(kubectl completion bash)' >>~/.bashrc
-echo 'alias k=kubectl' >>~/.bashrc;
-echo 'complete -o default -F __start_kubectl k' >>~/.bashrc;
-# shellcheck source="$HOME/.bashrc"
-source "$HOME/.bashrc";
+# Install bash autocompletion for kubectl
+COMPLETEION_STRING='complete -o default -F __start_kubectl'
+if grep -xq "$COMPLETEION_STRING" ~/.bashrc
+then
+  log_step "kubectl autocomplete already installed";
+else
+  log_step "Install kubectl autocomplete";
+
+  source /usr/share/bash-completion/bash_completion;
+  echo 'source <(kubectl completion bash)' >>~/.bashrc
+  echo 'alias k=kubectl' >>~/.bashrc;
+  echo "$COMPLETEION_STRING" >>~/.bashrc;
+  # shellcheck source="$HOME/.bashrc"
+  source "$HOME/.bashrc";
+  log_step "kubectl autocomplete already installed";
+fi
 
 
 # 4, SUPERSET SETUP
@@ -154,4 +163,18 @@ sudo mv ./tmp_caddyfile /etc/caddy/Caddyfile;
 caddy reload -c /etc/caddy/Caddyfile;
 
 # TODO: add minikube to the system startup
+# 7, add minikube to the system startup through cronjob
+log_step "Add minikube to the system startup";
+CRONJOB_FILE="cronjobs";
+CRONJOB_ITEM="@reboot sleep 10 && minikube start";
 
+touch "$CRONJOB_FILE";
+crontab -l > "$CRONJOB_FILE";
+
+if grep -xq "$CRONJOB_ITEM" "${CRONJOB_FILE}"
+then
+  rm "$CRONJOB_FILE";
+else
+  crontab "$CRONJOB_FILE";
+  rm "$CRONJOB_FILE";
+fi
