@@ -128,7 +128,7 @@ docker_postinstall() {
 
   # newgrp starts a subshell that never returns -> send the commands to the subshell
   /usr/bin/newgrp docker <<EONG
-  ./init.sh "$@" -ss initial_update -ss docker_engine_install -ss docker_postinstall 
+  ./init.sh -d "$DOMAIN_NAME" -v -ss initial_update -ss docker_engine_install -ss docker_postinstall 
 EONG
 
 }
@@ -155,7 +155,9 @@ minikube_install() {
   CRONJOB_ITEM="@reboot sleep 10 && minikube start";
 
   touch "$CRONJOB_FILE";
-  crontab -l > "$CRONJOB_FILE";
+  set_unsafe;
+  (crontab -l > "$CRONJOB_FILE") | true;
+  set_safe;
 
   if grep -xq "$CRONJOB_ITEM" "${CRONJOB_FILE}"
   then
