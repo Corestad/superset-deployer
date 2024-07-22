@@ -68,9 +68,9 @@ log_step "Docker engine installed";
 # docker postinstall
 log_step "Docker postinstall";
 
-set +o pipefail; # error returned when docker group already exists
+set +o pipefail; set +e; # error returned when docker group already exists
 sudo groupadd docker | true;
-set -o pipefail;
+set -o pipefail; set -e;
 
 sudo usermod -aG docker "$USER";
 newgrp docker;
