@@ -205,7 +205,7 @@ superset_setup() {
 
   # apply custom values to chart and install it
   log_step "Install Superset chart with custom values";
-  helm upgrade --install --values ./superset/helm/superset/values.yaml superset superset/superset;
+  helm upgrade --install --values --wait --timeout 10m ./superset/helm/superset/values.yaml superset superset/superset;
 }
 
 caddy_setup() {

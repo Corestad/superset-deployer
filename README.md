@@ -15,6 +15,11 @@ This repo makes deploying and updating [Superset](https://superset.apache.org/) 
 git clone https://github.com/Corestad/superset-setup && cd superset-setup && ./init.sh -d <DOMAIN NAME>
 ```
 
+4. The command can hang or error out in some parts (especially places around Docker install). Run it again wit
+```
+./init.sh -d <DOMAIN NAME>
+```
+
 > [!IMPORTANT]
 > The init script makes use of some `sudo` commands (sparingly), so be prepared to provide the required password when prompted
 
