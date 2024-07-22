@@ -175,6 +175,7 @@ if grep -xq "$CRONJOB_ITEM" "${CRONJOB_FILE}"
 then
   rm "$CRONJOB_FILE";
 else
+  echo "$CRONJOB_ITEM" >> "$CRONJOB_FILE";
   crontab "$CRONJOB_FILE";
   rm "$CRONJOB_FILE";
 fi
