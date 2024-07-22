@@ -83,7 +83,7 @@ set_safe;
 sudo usermod -aG docker "$USER";
 
 # newgrp starts a subshell that never returns
-/usr/bin/nwegrp docker <<EONG
+/usr/bin/newgrp docker <<EONG
 EONG
 
 # autostart docker on system startup
