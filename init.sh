@@ -73,7 +73,14 @@ log_step "Docker engine installed";
 
 # docker postinstall
 log_step "Docker postinstall";
+
+set +e;
 sudo groupadd docker;
+exit_code=$?
+if [ $exit_code -ne 0 ]; then
+  echo "Skipping exit due to error";
+fi
+set -e;
 sudo usermod -aG docker "$USER";
 newgrp docker;
 
