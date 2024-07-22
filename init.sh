@@ -1,9 +1,17 @@
 #!/bin/bash
-set -Eeuo pipefail;
-
 function log_step() {
   echo "### $1";
 }
+
+function set_safe() {
+  set -Eeuo pipefail;
+}
+
+function set_unsafe() {
+  set +Eeuo pipefail;
+}
+
+set_safe;
 
 # init opts variables
 DOMAIN_NAME='';
@@ -68,9 +76,9 @@ log_step "Docker engine installed";
 # docker postinstall
 log_step "Docker postinstall";
 
-set +o pipefail; set +e; # error returned when docker group already exists
+set_unsafe; # error returned when docker group already exists
 sudo groupadd docker | true;
-set -o pipefail; set -e;
+set_safe;
 
 sudo usermod -aG docker "$USER";
 newgrp docker;
