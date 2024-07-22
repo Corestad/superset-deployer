@@ -4,6 +4,7 @@ This repo makes deploying and updating [Superset](https://superset.apache.org/) 
 
 ## Requirements
 - This setup will use Minikube as a one node K8s instance, hence we recommend to use it on a VM with at least 2 (v)cores and 2GB of memory with at least 20GB free space. Check the current version of the Minikube [docs](https://minikube.sigs.k8s.io/docs/start) to check if requirements changed.
+- We recommend to use the latest (LTS) version of Ubunut/Debian, other dirstors might work as well.
 - Set up a domain name with your preferred Registrar to point to the IP you got for your server.
 
 ## Usage
